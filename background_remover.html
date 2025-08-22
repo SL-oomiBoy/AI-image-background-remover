@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Background Remover (Exhibition Edition)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: rgba(0,0,0,0.6);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-width: 600px;
+    }
+    h1 { margin-bottom: 20px; }
+    input[type="file"] { margin: 20px 0; }
+    img {
+      max-width: 250px;
+      margin: 10px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #56ab2f, #a8e6cf);
+      font-size: 1rem;
+      margin: 10px;
+    }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .result {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>✨ AI Background Remover</h1>
+    <input type="file" id="fileInput" accept="image/*"><br>
+    <button id="processBtn" disabled>🚀 Remove Background</button>
+    <div id="preview"></div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const processBtn = document.getElementById('processBtn');
+    const preview = document.getElementById('preview');
+    const result = document.getElementById('result');
+    let selectedFile = null;
+
+    fileInput.addEventListener('change', (e) => {
+      selectedFile = e.target.files[0];
+      if (selectedFile) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          preview.innerHTML = `<h3>📷 Original</h3><img src="${reader.result}">`;
+          result.innerHTML = "";
+          processBtn.disabled = false;
+        };
+        reader.readAsDataURL(selectedFile);
+      }
+    });
+
+    processBtn.addEventListener('click', async () => {
+      if (!selectedFile) return;
+
+      processBtn.disabled = true;
+      processBtn.textContent = "Processing...";
+
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      try {
+        const response = await fetch("http://localhost:7000/api/remove", {
+          method: "POST",
+          body: formData
+        });
+
+        if (!response.ok) throw new Error("API Error");
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+
+        result.innerHTML = `
+          <h3>✨ Background Removed</h3>
+          <img src="${url}" id="processedImg">
+          <br>
+          <a href="${url}" download="background_removed.png">
+            <button>📥 Download Result</button>
+          </a>
+        `;
+      } catch (err) {
+        alert("❌ Error: Make sure Rembg server is running with 'rembg s'");
+      } finally {
+        processBtn.disabled = false;
+        processBtn.textContent = "🚀 Remove Background";
+      }
+    });
+  </script>
+</body>
+</html>

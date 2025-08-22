@@ -1,0 +1,6 @@
+rembg[cli]
+onnxruntime-gpu
+pillow
+numpy
+fastapi
+uvicorn
