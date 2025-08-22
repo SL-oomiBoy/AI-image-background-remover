@@ -92,9 +92,13 @@ Keep this terminal open.(⚠️ IP and server process number maybe differ in you
 4. Preview original vs result side by side.
 5. Click Download Result to save as PNG.
 
+---
+
 ###📷 Screenshots
 
 ![background remover](screenshot.png)
+
+---
 
 ### 🚀 Usage Flow
 
@@ -103,6 +107,8 @@ Keep this terminal open.(⚠️ IP and server process number maybe differ in you
 3. Open the HTML app in your browser.
 4. Upload → Process → Download.
 5. Works fully offline after setup
+
+---
 
 ### 🔧 Troubleshooting
 - Error: Missing module (onnxruntime, click, etc.)
@@ -119,6 +125,8 @@ Keep this terminal open.(⚠️ IP and server process number maybe differ in you
     ```
 - Colored halo around edges
   - Fixed automatically by Rembg AI (U²-Net).
+
+---
 
 ### 📦 Requirements
 ```requirements.txt``` for quick setup(CPU Version):
@@ -146,11 +154,14 @@ Install with:
   ```bash
   pip install -r requirements-gpu.txt
   ```
+---
 
 ### 🤝 Contributing
   Pull requests are welcome.
 
   For major changes, open an issue first to discuss what you would like to change.
+
+---
 
 ### 📜 License
 This project is licensed under the MIT License.
@@ -159,6 +170,8 @@ Credits: Rembg
  for the U²-Net AI model.
 
 see the [LICENSE](LICENSE) file for details.
+
+---
 
 ### Credits
 Developed by Omiya
